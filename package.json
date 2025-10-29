@@ -1,0 +1,27 @@
+{
+  "type": "module",
+  "name": "proyect_pokemon_search",
+  "version": "1.0.0",
+  "description": "api_de_pokemon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gadieiru/proyect_pokemon_search.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gadieiru/proyect_pokemon_search/issues"
+  },
+  "homepage": "https://github.com/Gadieiru/proyect_pokemon_search#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.15.3",
+    "nodemon": "^3.1.10"
+  }
+}
