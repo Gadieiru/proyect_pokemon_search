@@ -1,30 +1,27 @@
+// Consejo: siempre al importar agregar tambien la extension del archivo, ej: import connection from "./pokemonGet/config/00_connection"; => mal;     import connection from "./pokemonGet/config/00_connection.js"; => agrega el .js
 import express from "express";
-import mysql from "mysql";
+import connection from "./pokemonGet/config/00_connection.js";
+import pokemonRoutes from "./pokemonGet/routes/01_pokemon.js";
+import rarityRoutes from "./pokemonGet/routes/02_rarity.js";
+import typesRoutes from "./pokemonGet/routes/03_types.js";
+import locationRoutes from "./pokemonGet/routes/04_location.js";
 
 const app = express();
+app.use(express.json());
 
-app.use(express.json())
-
-// Aqui nos conectamos a la base de datos de mysql a la que queremos acceder
-const connection = mysql.createConnection({
-    host: "localhost:3306",
-    database:  "pokemon_database",
-    user: "root",
-    password: "",
+app.get("/", (req, res) => {
+  res.send("Buscador de pokemons");
 });
 
-// Hacemos la validacion de conexion, si la conexion falla nos lanzara un error, si la conexion es valida nos arrojara a la consola un "CONEXION EXITOSA";
-connection.connect((err) => {
-  if(err) {
-   throw err;
-  }else{
-    console.log("CONEXION EXITOSA")
-  }
-});
+app.use("/pokemon/name", pokemonRoutes);
+app.use("/pokemon/rarity", rarityRoutes);
+app.use("/pokemon/types", typesRoutes);
+app.use("/pokemon/location", locationRoutes);
 
-app.get('/', (req, res) =>{
-    connection.query('SELECT * FROM pokemon', (err, result) => {
-        if(err) throw err;
-    });
-  res.send('Buscador de api');
-});
+app.post("/", () => {});
+
+const port = process.env.port || 3306;
+app.listen(port, () => console.log(`Escuchando en el puerto ${port}...`));
+
+// error, estamos utilizando el comando connection.end(), sin haber importado el connection.
+connection.end();
