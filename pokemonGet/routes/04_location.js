@@ -3,25 +3,22 @@ import connection from "../config/00_connection.js";
 
 const router = express.Router();
 
-router.get("/location/:location", (req, res) => {
-  const pokemonLocation = req.params.location;
+router.get("/:name", (req, res) => {
+  const pokemonName = req.params.name;
 
-  const location = connection.query(
-    "SELECT * FROM pokemon_database.location WHERE location_name = ? ",
-    [pokemonLocation],
+  connection.query(
+    "SELECT lc.location_name FROM pokemon_database.pokemon pk JOIN pokemon_location pkl on pkl.pokemon_id = pk.pokemon_id JOIN location lc on lc.location_id = pkl.location_id WHERE pokemon_name = ? ",
+    [pokemonName],
     (err, result) => {
       if (err) {
         console.error(err);
-        return res.status(500).json({ error: "Error en la base de datos" });
+      }
+      if (result.length === 0) {
+        return res.status(404).send("Ubicacion no encontrada");
       }
       res.json(result);
     }
   );
-
-  if (!location) {
-    return res.status(404).send("Ubicacion no encontrada");
-  }
-  res.send(location);
 });
 
 export default router;
